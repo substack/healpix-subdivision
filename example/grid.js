@@ -1,4 +1,4 @@
-var grid = require('../')(4,3)
+var grid = require('../')(3,3)
 var data = grid()
-//data = data.concat(grid(data[0]))
+data = data.concat([grid(data[1])])
 console.log(JSON.stringify(data,null,2))
