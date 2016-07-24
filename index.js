@@ -1,37 +1,39 @@
 var healpix = require('healpix')
+var almost = require('almost-equal')
 var H = 4, K = 3
 var hp = healpix(H,K)
 var PI = Math.PI
+var thetax = Math.asin(2/3)
+var EPSILON = 1e-12
 
-module.exports = function (nx,ny) {
+module.exports = function (size) {
   return function (shapes) {
     if (!shapes) return regions(H,K)
-    var extents = [
-      shapes[0][0][0],
-      shapes[0][0][1],
-      shapes[0][0][0],
-      shapes[0][0][1]
-    ]
-    shapes.forEach(function (s) {
+    var parts = []
+    shapes.forEach(function (s, ix) {
+      var exw = s[0][0], exs = s[0][1], exe = s[0][0], exn = s[0][1]
       for (var i = 1; i < s.length - 1; i++) {
-        extents[0] = Math.min(extents[0],s[i][0])
-        extents[1] = Math.min(extents[1],s[i][1])
-        extents[2] = Math.max(extents[2],s[i][0])
-        extents[3] = Math.max(extents[3],s[i][1])
+        exw = Math.min(exw,s[i][0])
+        exs = Math.min(exs,s[i][1])
+        exe = Math.max(exe,s[i][0])
+        exn = Math.max(exn,s[i][1])
+      }
+      var sx = (exe-exw)/size
+      var yscale = 1
+      if (Math.abs(exn)-EPSILON > thetax) yscale = 2
+      else if (Math.abs(exs)-EPSILON > thetax) yscale = 2
+      var sy = (exn-exs)/size * yscale
+
+      for (var y = 0; y < size; y++) {
+        for (var x = 0; x < size; x++) {
+          var w = exw + sx*x
+          var s = exs + sy*y - sy*size/2 * (yscale-1)
+          var e = exw + sx*(x+1)
+          var n = exs + sy*(y+1) - sy*size/2 * (yscale-1)
+          parts.push([ [ [w,s], [e,s], [e,n], [w,n], [w,s] ] ])
+        }
       }
     })
-    var parts = []
-    var sx = (extents[2]-extents[0])/nx
-    var sy = (extents[3]-extents[1])/ny
-    for (var y = 0; y < ny; y++) {
-      for (var x = 0; x < nx; x++) {
-        var w = extents[0] + sx*x
-        var s = extents[1] + sy*y
-        var e = extents[0] + sx*(x+1)
-        var n = extents[1] + sy*(y+1)
-        parts.push([ [ [w,s], [e,s], [e,n], [w,n], [w,s] ] ])
-      }
-    }
     return parts
   }
 }
