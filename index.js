@@ -10,44 +10,54 @@ module.exports = function (size) {
   return function (shapes) {
     if (!shapes) return regions(H,K)
     var parts = []
-    shapes.forEach(function (s, ix) {
-      var exw = s[0][0], exs = s[0][1], exe = s[0][0], exn = s[0][1]
-      for (var i = 1; i < s.length - 1; i++) {
-        exw = Math.min(exw,s[i][0])
-        exs = Math.min(exs,s[i][1])
-        exe = Math.max(exe,s[i][0])
-        exn = Math.max(exn,s[i][1])
-      }
-      var sx = (exe-exw)/size
-      var polar = Math.abs(exn)-EPSILON > thetax
-        || Math.abs(exs)-EPSILON > thetax
-      var sy = (exn-exs)/size //* yscale
+    var s = shapes[0]
+    var exw = s[0][0], exs = s[0][1], exe = s[0][0], exn = s[0][1]
+    for (var i = 1; i < s.length - 1; i++) {
+      exw = Math.min(exw,s[i][0])
+      exs = Math.min(exs,s[i][1])
+      exe = Math.max(exe,s[i][0])
+      exn = Math.max(exn,s[i][1])
+    }
+    var sx = (exe-exw)/size
+    var polar = Math.abs(exn)-EPSILON > thetax
+      || Math.abs(exs)-EPSILON > thetax
+    var sy = (exn-exs)/size //* yscale
 
-      if (s.length === 10 && polar) {
-        firstPolar(parts, s, size, sx, sy)
-      } else if (polar) {
-        // ...
-      } else {
-        for (var y = 0; y < size; y++) {
-          for (var x = 0; x < size; x++) {
-            var w = exw + sx*x
-            var s = exs + sy*y
-            var e = exw + sx*(x+1)
-            var n = exs + sy*(y+1)
-            parts.push([ [ [w,s], [e,s], [e,n], [w,n], [w,s] ] ])
-          }
+    if (polar && shapes.length === 1 && s.length === 10) {
+      firstPolar(parts, s, size, sx, sy)
+    } else if (polar && shapes.length === 2) {
+      console.error('todo')
+    } else {
+      for (var y = 0; y < size; y++) {
+        for (var x = 0; x < size; x++) {
+          var w = exw + sx*x
+          var s = exs + sy*y
+          var e = exw + sx*(x+1)
+          var n = exs + sy*(y+1)
+          parts.push([ [ [w,s], [e,s], [e,n], [w,n], [w,s] ] ])
         }
       }
-    })
+    }
     return parts
   }
 }
 
 function firstPolar (parts, s, size, sx, sy) {
   var yn = s[0][1] > 0 ? -1 : 1
-  var z = size/2, q = (s[2][0]-s[1][0])/z
+  var z = size/2, fz = Math.floor(z), q = (s[2][0]-s[1][0])/z
+  var tops = null
+  if (size % 2 === 1) parts.push(tops = [])
   for (var j = 1; j < 9; j += 2) {
     for (var y = 0; y < z; y++) {
+      if (y === fz && tops) {
+        var y0 = s[0][1] - y*sy*2 * yn
+        var y1 = y0 - sy * yn
+        var x0 = s[j][0] - (s[2][0]-s[1][0])*(1-y/z)
+        var x1 = x0 + q/2
+        var x2 = x0 + q
+        tops.push([ [x0,y0], [x1,y1], [x2,y0], [x0,y0] ])
+        continue
+      }
       var y0 = s[0][1] - y*sy*2 * yn
       var y1 = s[0][1] - (y+1)*sy*2 * yn
       var x0 = s[j][0] + (s[2][0]-s[1][0])*(1-y/z) - q
@@ -58,6 +68,16 @@ function firstPolar (parts, s, size, sx, sy) {
         [ [x0,y1], [x0,y0], [x1,y0], [x0,y1] ],
         [ [w(x2),y1], [w(x2),y0], [w(x3),y0], [w(x2),y1] ]
       ])
+      for (var k = 0; k < (fz-y-1)*2; k++) {
+        var sq = [
+          [x0-k*q,y0],
+          [x0-(k+1)*q,y0],
+          [x0-(k+1)*q,y1],
+          [x0-k*q,y1],
+          [x0-k*q,y0]
+        ]
+        parts.push([ sq ])
+      }
     }
   }
   function w (x) {

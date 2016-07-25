@@ -1,5 +1,6 @@
-var grid = require('../')(5)
+var grid = require('../')(6)
 var data = grid()
 //data = data.concat(grid(data[3]))
 data = data.concat(grid(data[5]))
+data = data.concat(grid(data[6]))
 console.log(JSON.stringify(data,null,2))
