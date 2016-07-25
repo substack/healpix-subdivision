@@ -1,10 +1,23 @@
 var html = require('yo-yo')
-var grid = require('../')(6)
-var data = grid()
+var hgrid = require('../')
 var PI = Math.PI
+
+var grid, data
+window.addEventListener('hashchange', setup)
+window.addEventListener('resize', update)
 
 var root = document.createElement('div')
 document.body.appendChild(root)
+
+setup()
+
+function setup () {
+  var size = location.hash.slice(1) || 4
+  location.hash = size
+  grid = hgrid(size)
+  data = grid()
+  update()
+}
 
 function update () {
   html.update(root, html`<div>
@@ -24,8 +37,6 @@ function update () {
     </svg>
   </div>`)
 }
-update()
-window.addEventListener('resize', update)
 
 function scale (pt) {
   var size = Math.min(window.innerWidth, window.innerHeight) * 3/2
