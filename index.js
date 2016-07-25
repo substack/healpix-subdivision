@@ -3,8 +3,6 @@ var almost = require('almost-equal')
 var H = 4, K = 3
 var hp = healpix(H,K)
 var PI = Math.PI
-var thetax = Math.asin(2/3)
-var EPSILON = 1e-12
 
 module.exports = function (size) {
   return function (shapes) {
