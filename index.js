@@ -12,24 +12,17 @@ module.exports = function (size) {
     var parts = []
     var s = shapes[0]
     var exw = s[0][0], exs = s[0][1], exe = s[0][0], exn = s[0][1]
-    for (var i = 1; i < s.length - 1; i++) {
-      exw = Math.min(exw,s[i][0])
-      exs = Math.min(exs,s[i][1])
-      exe = Math.max(exe,s[i][0])
-      exn = Math.max(exn,s[i][1])
-    }
-    var sx = (exe-exw)/size
-    var polar = Math.abs(exn)-EPSILON > thetax
-      || Math.abs(exs)-EPSILON > thetax
-    var sy = (exn-exs)/size //* yscale
+    var sx, sy
 
-    if (polar && shapes.length === 1 && s.length === 10) {
+    if (shapes.length === 1 && s.length === 10) {
+      getex()
       firstPolar(parts, s, size, sx, sy)
-    } else if (polar && shapes.length === 2) { // 2-tri
+    } else if (shapes.length === 2) { // 2-tri
       splitTri(parts, shapes, size)
     } else if (shapes.length === 4) { // tops
       console.error('top')
     } else {
+      getex()
       for (var y = 0; y < size; y++) {
         for (var x = 0; x < size; x++) {
           var w = exw + sx*x
@@ -41,6 +34,17 @@ module.exports = function (size) {
       }
     }
     return parts
+
+    function getex () {
+      for (var i = 1; i < s.length - 1; i++) {
+        exw = Math.min(exw,s[i][0])
+        exs = Math.min(exs,s[i][1])
+        exe = Math.max(exe,s[i][0])
+        exn = Math.max(exn,s[i][1])
+      }
+      sx = (exe-exw)/size
+      sy = (exn-exs)/size //* yscale
+    }
   }
 }
 
