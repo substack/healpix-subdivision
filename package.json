@@ -1,5 +1,6 @@
 {
   "name": "healpix-subdivision",
+  "description": "iteratively divide sections of a healpix grid",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {},
@@ -26,6 +27,5 @@
   "bugs": {
     "url": "https://github.com/substack/healpix-subdivision/issues"
   },
-  "homepage": "https://github.com/substack/healpix-subdivision#readme",
-  "description": ""
+  "homepage": "https://github.com/substack/healpix-subdivision#readme"
 }
