@@ -26,7 +26,7 @@ module.exports = function (size) {
         }
       }
     } else {
-      console.error('unhandled')
+      throw new Error('unexpected geometry')
     }
     return parts
 
