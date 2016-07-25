@@ -1,0 +1,31 @@
+{
+  "name": "healpix-subdivision",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "healpix",
+    "geo",
+    "coordinates",
+    "equal area",
+    "grid"
+  ],
+  "author": "substack",
+  "license": "BSD",
+  "dependencies": {
+    "healpix": "^1.0.0"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/substack/healpix-subdivision.git"
+  },
+  "bugs": {
+    "url": "https://github.com/substack/healpix-subdivision/issues"
+  },
+  "homepage": "https://github.com/substack/healpix-subdivision#readme",
+  "description": ""
+}

@@ -21,6 +21,7 @@ function setup () {
 
 function update () {
   html.update(root, html`<div>
+    <div>click the shapes below</div>
     <svg width="100%" height="${window.innerHeight}">
       ${data.map(function (shapes) {
         return shapes.map(function (pts) {

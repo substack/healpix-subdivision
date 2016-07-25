@@ -1,6 +1,4 @@
-var healpix = require('healpix')
 var H = 4, K = 3
-var hp = healpix(H,K)
 var PI = Math.PI
 var EPSILON = 1e-8
 
