@@ -1,4 +1,4 @@
-var grid = require('../')(4)
+var grid = require('../')(5)
 var data = grid()
 //data = data.concat(grid(data[3]))
 data = data.concat(grid(data[5]))

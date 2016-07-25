@@ -45,15 +45,15 @@ module.exports = function (size) {
 
 function firstPolar (parts, s, size, sx, sy) {
   var yn = s[0][1] > 0 ? -1 : 1
-  var z = size/2
+  var z = size/2, q = (s[2][0]-s[1][0])/z
   for (var j = 1; j < 9; j += 2) {
     for (var y = 0; y < z; y++) {
       var y0 = s[0][1] - y*sy*2 * yn
       var y1 = s[0][1] - (y+1)*sy*2 * yn
-      var x0 = s[j][0] + (s[2][0]-s[1][0])*(1/2-y/size*2)
-      var x1 = x0 + (s[2][0]-s[1][0])/2
-      var x2 = s[j+2][0] - (s[2][0]-s[1][0])*(1/2-y/size*2)
-      var x3 = x2 - (s[2][0]-s[1][0])/2
+      var x0 = s[j][0] + (s[2][0]-s[1][0])*(1-y/z) - q
+      var x1 = x0 + q
+      var x2 = s[j+2][0] - (s[2][0]-s[1][0])*(1-y/z) + q
+      var x3 = x2 - q
       parts.push([
         [ [x0,y1], [x0,y0], [x1,y0], [x0,y1] ],
         [ [w(x2),y1], [w(x2),y0], [w(x3),y0], [w(x2),y1] ]
