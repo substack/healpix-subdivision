@@ -49,23 +49,22 @@ function splitTop (parts, shapes, size) {
   var s = shapes[0]
   var sx = (s[0][0]-s[1][0])/size
   var sy = (s[0][1]-s[1][1])/size
-  var yn = s[0][1] > 0 ? -1 : 1
   var z = size/2, fz = Math.floor(z), q = (s[2][0]-s[1][0])/z
   var tops = null
   if (size % 2 === 1) parts.push(tops = [])
   for (var j = 0; j < shapes.length; j++) {
     for (var y = 0; y < z; y++) {
       if (y === fz && tops) {
-        var y0 = s[0][1] - y*sy*2 * yn
-        var y1 = y0 - sy * yn
+        var y0 = s[0][1] - y*sy*2
+        var y1 = y0 - sy
         var x0 = shapes[j][1][0] - (s[2][0]-s[1][0])*(1-y/z)
         var x1 = x0 + q/2
         var x2 = x0 + q
         tops.push([ [x0,y0], [x1,y1], [x2,y0], [x0,y0] ])
         continue
       }
-      var y0 = s[0][1] - y*sy*2 * yn
-      var y1 = s[0][1] - (y+1)*sy*2 * yn
+      var y0 = s[0][1] - y*sy*2
+      var y1 = s[0][1] - (y+1)*sy*2
       var x0 = shapes[j][1][0] + (s[2][0]-s[1][0])*(1-y/z) - q
       var x1 = x0 + q
       var x2 = shapes[(j+1)%shapes.length][2][0]
