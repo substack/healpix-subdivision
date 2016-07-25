@@ -25,8 +25,10 @@ module.exports = function (size) {
 
     if (polar && shapes.length === 1 && s.length === 10) {
       firstPolar(parts, s, size, sx, sy)
-    } else if (polar && shapes.length === 2) {
-      console.error('todo')
+    } else if (polar && shapes.length === 2) { // 2-tri
+      splitTri(parts, shapes, size)
+    } else if (shapes.length === 4) { // tops
+      console.error('top')
     } else {
       for (var y = 0; y < size; y++) {
         for (var x = 0; x < size; x++) {
@@ -39,6 +41,55 @@ module.exports = function (size) {
       }
     }
     return parts
+  }
+}
+
+function splitTri (parts, shapes, size) {
+  var ax0 = shapes[0][0][0]
+  var ax1 = shapes[0][2][0]
+  var ay0 = shapes[0][2][1]
+  var ay1 = shapes[0][0][1]
+  var bx0 = shapes[1][0][0]
+  var bx1 = shapes[1][2][0]
+  var by0 = shapes[1][1][1]
+  var by1 = shapes[1][0][1]
+  var w = (ax1-ax0)/size, h = (ay1-ay0)/size
+
+  for (var i = 0; i < size; i++) {
+    parts.push([
+      [
+        [ax1-w*(i+1),ay0+h*(i+1)],
+        [ax1-w*(i+1),ay0+h*i],
+        [ax1-w*i,ay0+h*i],
+        [ax1-w*(i+1),ay0+h*(i+1)]
+      ],
+      [
+        [bx1+w*(i+1),by0+h*(i+1)],
+        [bx1+w*(i+1),by0+h*i],
+        [bx1+w*i,by0+h*i],
+        [bx1+w*(i+1),by0+h*(i+1)]
+      ],
+    ])
+    for (var j = 0; j < i; j++) { // squares
+      parts.push([
+        [
+          [ax1-w*i,ay0+h*j],
+          [ax1-w*(i+1),ay0+h*j],
+          [ax1-w*(i+1),ay0+h*(j+1)],
+          [ax1-w*i,ay0+h*(j+1)],
+          [ax1-w*i,ay0+h*j]
+        ]
+      ])
+      parts.push([
+        [
+          [bx1+w*i,by0+h*j],
+          [bx1+w*(i+1),by0+h*j],
+          [bx1+w*(i+1),by0+h*(j+1)],
+          [bx1+w*i,by0+h*(j+1)],
+          [bx1+w*i,by0+h*j]
+        ]
+      ])
+    }
   }
 }
 
