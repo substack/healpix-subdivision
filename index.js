@@ -1,5 +1,4 @@
 var healpix = require('healpix')
-var almost = require('almost-equal')
 var H = 4, K = 3
 var hp = healpix(H,K)
 var PI = Math.PI
@@ -69,7 +68,8 @@ function splitTop (parts, shapes, size) {
       var y1 = s[0][1] - (y+1)*sy*2 * yn
       var x0 = shapes[j][1][0] + (s[2][0]-s[1][0])*(1-y/z) - q
       var x1 = x0 + q
-      var x2 = shapes[j][2][0] - (s[2][0]-s[1][0])*(1-y/z) + q*(size+2)/2
+      var x2 = shapes[(j+1)%shapes.length][2][0]
+        - (s[2][0]-s[1][0])*(1-y/z) - q*(size-2)/2
       var x3 = x2 - q
       parts.push([
         [ [x0,y1], [x0,y0], [x1,y0], [x0,y1] ],
