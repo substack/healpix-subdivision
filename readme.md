@@ -1,6 +1,6 @@
 # healpix-subdivision
 
-iteratively divide sections of a [healpix][1] grid
+iteratively divide sections of a [healpix][1] H=4,K=3 grid
 
 [1]: http://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/HEALPix_Calabretta.pdf
 

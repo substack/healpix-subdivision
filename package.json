@@ -1,6 +1,6 @@
 {
   "name": "healpix-subdivision",
-  "description": "iteratively divide sections of a healpix grid",
+  "description": "iteratively divide sections of a healpix H=4,K=3 grid",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {},
